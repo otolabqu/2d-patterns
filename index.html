@@ -2,6 +2,7 @@
 <canvas id="canvas2" width="100" height="100" style="image-rendering: pixelated;"></canvas>
 <img src="pattern1.png" id="pattern1">
 <img src="pattern2.png" id="pattern2">
+<img src="pattern3.png" id="pattern3">
 <script>
 
     function indexToCoords(n) {
@@ -17,23 +18,25 @@
 
         var cells1 = []
         var cells2 = []
-        //var cells3 = []
+        var cells3 = []
 
         for (let n = 0; n<100; n++) {
-            if (Math.random() < 0.5) {
+            let x = Math.random()
+            if (x< 0.33) {
                 cells1.push(n)
-            } else {
+            } else if (x < 0.66) {
                 cells2.push(n)
+            } else {
+                cells3.push(n)
             }
         }
-        console.log("cells1: " + cells1)
-        console.log("cells2: " + cells2)
+        
         var canvas2 = document.getElementById('canvas2');
         var ctx2 = canvas2.getContext('2d');
         var p1 = document.getElementById("pattern1")
         var p2 = document.getElementById("pattern2")
+        var p3 = document.getElementById("pattern3")
         p1.addEventListener('load', e => {
-            console.log("event listened ok LOAD ")
             cells1.forEach(index => {
                 let xy = indexToCoords(index)
                 ctx2.drawImage(p1, xy[0], xy[1]);              
@@ -41,16 +44,18 @@
 });
 
 p2.addEventListener('load', e => {
-            console.log("event listened ok LOAD ")
             cells2.forEach(index => {
                 let xy = indexToCoords(index)
                 ctx2.drawImage(p2, xy[0], xy[1]);              
             })
 });
-        console.log(p1)
-       // ctx2.drawImage(p1,10,10,10,10)
-       // ctx2.fillRect(10,10,10,10)
-        //ctx2.drawImage(p1,0,0)
+p3.addEventListener('load', e => {
+            cells3.forEach(index => {
+                let xy = indexToCoords(index)
+                ctx2.drawImage(p3, xy[0], xy[1]);              
+            })
+});
+
     }
 
     setup()
