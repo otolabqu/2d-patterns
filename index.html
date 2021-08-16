@@ -43,7 +43,7 @@
         
     }
 
-    function trace(x, y, blue, green) {
+    function trace(x, y, red, green, blue) {
         if (x < 0) return
         if (y < 0) return
         if (x > 99) return
@@ -53,35 +53,34 @@
 
             var imgd = ctx2.getImageData(x, y, 1, 1);
             var pix = imgd.data;
-            if (pix[0] == 255) {
+            if (!(pix[0] == 0 && pix[1] == 0 && pix[2] == 0)) {
                 return //white do nothing
             } else {
-                pix[0] = 255 //make it red
+                pix[0] = red //make it red
                 pix[2] = blue
                 pix[1] = green
                 ctx2.putImageData(imgd, x, y)
-                trace(x-1, y, blue, green)
-                trace(x+1, y, blue, green)
-                trace(x, y-1, blue, green)
-                trace(x, y+1, blue, green)
+                trace(x-1, y, red, green, blue)
+                trace(x+1, y, red, green, blue)
+                trace(x, y-1, red, green, blue)
+                trace(x, y+1, red, green, blue)
 
             }
     }
 
-    function blue() {
-        return Math.floor(Math.random() * 10) * 25
+    function color() {
+        let c =  Math.floor(Math.random() * 4) * 50 + 50
+        return c
     }
 
     function checkBorders() {
-        
-        console.log("checking borders")
         for (let x = 0; x<100; x++) {
-            trace(x, 0, blue(), blue())
-            trace(x, 99, blue(), blue())
+            trace(x, 0, color(), color(), color())
+            trace(x, 99, color(), color(), color())
         }
         for (let y = 0; y<100; y++) {
-            trace(0, y, blue(), blue())
-            trace(99, y, blue(), blue())
+            trace(0, y, color(), color(), color())
+            trace(99, y, color(), color(), color())
         }
     }
 
