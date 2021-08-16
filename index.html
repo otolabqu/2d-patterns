@@ -1,10 +1,20 @@
 
 <canvas id="canvas2" width="100" height="100" style="image-rendering: pixelated;"></canvas>
-<img src="https://github.com/otolabqu/2d-patterns/blob/main/v2-1.png?raw=true" id="pattern0">
-<img src="https://github.com/otolabqu/2d-patterns/blob/main/v2-2.png?raw=true" id="pattern1">
-<img src="https://github.com/otolabqu/2d-patterns/blob/main/v2-3.png?raw=true" id="pattern2">
-<img src="https://github.com/otolabqu/2d-patterns/blob/main/v2-4.png?raw=true" id="pattern3">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAS0lEQVQYGY2OwQ4AMARDddn///K2yggHwkXa1CucN/IHgARptu6VVCPGQTyIVrOS1dXsGKj+47FXk9YRNUhSR0vE6jfzvdqMao+DF5Z0Fw1RhhvUAAAAAElFTkSuQmCC" id="pattern0">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAARklEQVQYGY1OQQ4AIAjK5v+/XNFiw4MNLgriINbBeIiIIZTynbOwD7GNibgOesuuE595t6NtYzICUzupjr0YIbATdoUdvQEhmBAYdPdqYgAAAABJRU5ErkJggg==" id="pattern1">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAUklEQVQYGY2PAQoAIAgDVfz/l6tFCxWMhJCtc5aOVXJKVSVI2rtbUksAxqmVQKR1ic7pDuC9dUBcDcZpcJK69g3+pKbP1JSo72qYr/UJBNw9YwICrBwX6pBuOAAAAABJRU5ErkJggg==" id="pattern2">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAVUlEQVQYGYWPUQ4AIAhCs3X/K1e4cOm0+GkYPEvmVjsSkXZZjvUczm2DcBTKLpjRWETdVmckBkdGQYEB3vdIqby+ke0qhLl9hiuqsK0G9UXWIGg/4gInBSAVay240gAAAABJRU5ErkJggg==" id="pattern3">
+
 <script>
+/*
+<img src="v2-1.png" id="pattern0">
+<img src="v2-2.png" id="pattern1">
+<img src="v2-3.png" id="pattern2">
+<img src="v2-4.png" id="pattern3">
+*/
+
+    var canvas2 = document.getElementById('canvas2');
+    var ctx2 = canvas2.getContext('2d');
 
     function indexToCoords(n) {
         let x = 10 * Math.floor(n % 10)
@@ -20,8 +30,6 @@
             cells[x].push(n)
         }
         
-        var canvas2 = document.getElementById('canvas2');
-        var ctx2 = canvas2.getContext('2d');
         for (let n = 0; n<4; n++) {
             let image = document.getElementById("pattern" + n)
             image.addEventListener('load', e => {
@@ -30,6 +38,43 @@
                     ctx2.drawImage(image, xy[0], xy[1]);                  
                 })
             })
+        }
+        setTimeout( () => {checkBorders()}, 1000)
+        
+    }
+
+    function trace(x, y) {
+        if (x < 0) return
+        if (y < 0) return
+        if (x > 99) return
+        if (y > 99) return
+            var canvas2 = document.getElementById('canvas2');
+            var ctx2 = canvas2.getContext('2d');
+
+            var imgd = ctx2.getImageData(x, y, 1, 1);
+            var pix = imgd.data;
+            if (pix[0] == 255) {
+                return //white do nothing
+            } else {
+                pix[0] = 255 //make it red
+                ctx2.putImageData(imgd, x, y)
+                trace(x-1, y)
+                trace(x+1, y)
+                trace(x, y-1)
+                trace(x, y+1)
+
+            }
+    }
+
+    function checkBorders() {
+        console.log("checking borders")
+        for (let x = 0; x<100; x++) {
+            trace(x, 0)
+            trace(x, 99)
+        }
+        for (let y = 0; y<100; y++) {
+            trace(0, y)
+            trace(99, y)
         }
     }
 
