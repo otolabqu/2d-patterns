@@ -3,6 +3,7 @@
 <img src="pattern1.png" id="pattern1">
 <img src="pattern2.png" id="pattern2">
 <img src="pattern3.png" id="pattern3">
+<img src="pattern4.png" id="pattern4">
 <script>
 
     function indexToCoords(n) {
@@ -16,19 +17,11 @@
         //lägg in det i en array
         //sen när respektive pattern har laddat så läggs det in på alla celler som matchar
 
-        var cells1 = []
-        var cells2 = []
-        var cells3 = []
-
+        var cells = [[], [], [], []]
+        
         for (let n = 0; n<100; n++) {
-            let x = Math.random()
-            if (x< 0.33) {
-                cells1.push(n)
-            } else if (x < 0.66) {
-                cells2.push(n)
-            } else {
-                cells3.push(n)
-            }
+            let x = Math.floor(Math.random() * 4)
+            cells[x].push(n)
         }
         
         var canvas2 = document.getElementById('canvas2');
@@ -36,23 +29,30 @@
         var p1 = document.getElementById("pattern1")
         var p2 = document.getElementById("pattern2")
         var p3 = document.getElementById("pattern3")
+        var p4 = document.getElementById("pattern4")
         p1.addEventListener('load', e => {
-            cells1.forEach(index => {
+            cells[0].forEach(index => {
                 let xy = indexToCoords(index)
                 ctx2.drawImage(p1, xy[0], xy[1]);              
             })
 });
 
 p2.addEventListener('load', e => {
-            cells2.forEach(index => {
+            cells[1].forEach(index => {
                 let xy = indexToCoords(index)
                 ctx2.drawImage(p2, xy[0], xy[1]);              
             })
 });
 p3.addEventListener('load', e => {
-            cells3.forEach(index => {
+            cells[2].forEach(index => {
                 let xy = indexToCoords(index)
                 ctx2.drawImage(p3, xy[0], xy[1]);              
+            })
+});
+p4.addEventListener('load', e => {
+            cells[3].forEach(index => {
+                let xy = indexToCoords(index)
+                ctx2.drawImage(p4, xy[0], xy[1]);              
             })
 });
 
