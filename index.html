@@ -43,7 +43,7 @@
         
     }
 
-    function trace(x, y, blue) {
+    function trace(x, y, blue, green) {
         if (x < 0) return
         if (y < 0) return
         if (x > 99) return
@@ -58,11 +58,12 @@
             } else {
                 pix[0] = 255 //make it red
                 pix[2] = blue
+                pix[1] = green
                 ctx2.putImageData(imgd, x, y)
-                trace(x-1, y, blue)
-                trace(x+1, y, blue)
-                trace(x, y-1, blue)
-                trace(x, y+1, blue)
+                trace(x-1, y, blue, green)
+                trace(x+1, y, blue, green)
+                trace(x, y-1, blue, green)
+                trace(x, y+1, blue, green)
 
             }
     }
@@ -75,12 +76,12 @@
         
         console.log("checking borders")
         for (let x = 0; x<100; x++) {
-            trace(x, 0, blue())
-            trace(x, 99, blue())
+            trace(x, 0, blue(), blue())
+            trace(x, 99, blue(), blue())
         }
         for (let y = 0; y<100; y++) {
-            trace(0, y, blue())
-            trace(99, y, blue())
+            trace(0, y, blue(), blue())
+            trace(99, y, blue(), blue())
         }
     }
 
