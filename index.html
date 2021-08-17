@@ -12,7 +12,7 @@
 <img src="v2-3.png" id="pattern2">
 <img src="v2-4.png" id="pattern3">
 */
-
+    let usedColors = {}
     var canvas2 = document.getElementById('canvas2');
     var ctx2 = canvas2.getContext('2d');
 
@@ -43,27 +43,48 @@
         
     }
 
-    function trace(x, y, red, green, blue) {
+    function readPixel(x, y) {
+        var canvas2 = document.getElementById('canvas2');
+        var ctx2 = canvas2.getContext('2d');
+        var imgd = ctx2.getImageData(x, y, 1, 1);
+        return imgd
+    }
+
+    function startTrace(x, y) {
         if (x < 0) return
         if (y < 0) return
         if (x > 99) return
         if (y > 99) return
-            var canvas2 = document.getElementById('canvas2');
-            var ctx2 = canvas2.getContext('2d');
+        let imgd = readPixel(x,y)
+        let pix = imgd.data
+        
+        if (!(pix[0] == 0 && pix[1] == 0 && pix[2] == 0)) {
+                return //not black, do nothing
+        }
+        trace(x,y, unusedColorTripe())
+    }
+    function trace(x, y, color) {
+        if (x < 0) return
+        if (y < 0) return
+        if (x > 99) return
+        if (y > 99) return
 
-            var imgd = ctx2.getImageData(x, y, 1, 1);
-            var pix = imgd.data;
-            if (!(pix[0] == 0 && pix[1] == 0 && pix[2] == 0)) {
-                return //white do nothing
+        let imgd = readPixel(x,y)
+        let pix = imgd.data
+        if (!(pix[0] == 0 && pix[1] == 0 && pix[2] == 0)) {
+                return //not black, do nothing
             } else {
+                let red = color[0]
+                let green = color[1]
+                let blue = color[2]
                 pix[0] = red //make it red
                 pix[2] = blue
                 pix[1] = green
                 ctx2.putImageData(imgd, x, y)
-                trace(x-1, y, red, green, blue)
-                trace(x+1, y, red, green, blue)
-                trace(x, y-1, red, green, blue)
-                trace(x, y+1, red, green, blue)
+                trace(x-1, y, color)
+                trace(x+1, y, color)
+                trace(x, y-1, color)
+                trace(x, y+1, color)
 
             }
     }
@@ -73,18 +94,48 @@
         return c
     }
 
-    function checkBorders() {
-        for (let x = 0; x<100; x++) {
-            trace(x, 0, color(), color(), color())
-            trace(x, 99, color(), color(), color())
+    function colorTriple() {
+        return [color(), color(), color()]
+    }
+
+    function unusedColorTripe() {
+        let c = colorTriple()
+        let s = c.toString()
+        while (s in usedColors) {
+            c = colorTriple()
+            s = c.toString()
         }
-        for (let y = 0; y<100; y++) {
-            trace(0, y, color(), color(), color())
-            trace(99, y, color(), color(), color())
+        console.log("unused color returning " + c + " which tostring is " + s)
+        usedColors[s] = true
+        return c
+    }
+
+    function checkBorders() {
+        for (let n = 0; n<100; n++) {
+            startTrace(n, 0)
+            startTrace(n, 99)
+            startTrace(0, n)
+            startTrace(99, n)
+        }
+        console.log("all used colors: ")
+        console.log(usedColors)
+       // setTimeout(() => {fillFigures()}, 1000)
+    }
+
+    function notWhite(p) {
+        return p[0] != 255 || p[1] != 255 || p[2] != 255
+    }
+
+    function fillFigures() {
+        for (let x = 0; x<100; x++) {
+            let imgd = readPixel(x,0)
+            let pix = imgd.data
+            
+            if (notWhite(pix)) { //found start of a figure
+                //each figure has a unique color, so we just keep tracing along the border
+            }
         }
     }
 
     setup()
-
-    
 </script>
