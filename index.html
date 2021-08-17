@@ -50,11 +50,17 @@
         return imgd
     }
 
+    function outside(x,y) {
+        if (x < 0) return true
+        if (y < 0) return true
+        if (x > 99) return true
+        if (y > 99) return true
+        
+    }
     function startTrace(x, y) {
-        if (x < 0) return
-        if (y < 0) return
-        if (x > 99) return
-        if (y > 99) return
+        if (outside(x,y)) {
+            return
+        }
         let imgd = readPixel(x,y)
         let pix = imgd.data
         
@@ -64,11 +70,10 @@
         trace(x,y, unusedColorTripe())
     }
     function trace(x, y, color) {
-        if (x < 0) return
-        if (y < 0) return
-        if (x > 99) return
-        if (y > 99) return
-
+        if (outside(x,y)) {
+            return
+        }
+        
         let imgd = readPixel(x,y)
         let pix = imgd.data
         if (!(pix[0] == 0 && pix[1] == 0 && pix[2] == 0)) {
@@ -119,23 +124,49 @@
         }
         console.log("all used colors: ")
         console.log(usedColors)
-       // setTimeout(() => {fillFigures()}, 1000)
+        setTimeout(() => {fillBorderFigures()}, 1000)
     }
 
     function notWhite(p) {
         return p[0] != 255 || p[1] != 255 || p[2] != 255
     }
 
-    function fillFigures() {
+    function bucketFill(color, x, y) {
+        if (outside(x,y)) {
+            return
+        }
+        let imgd = readPixel(x,y)
+        let pix = imgd.data
+        if (notWhite(pix)) {
+            return
+        }
+        pix[0] = color[0] 
+        pix[1] = color[1]
+        pix[2] = color[2]
+        ctx2.putImageData(imgd, x, y)
+        bucketFill(color, x-1, y)
+        bucketFill(color, x+1, y)
+        bucketFill(color, x, y-1)
+        bucketFill(color, x, y+1)
+    }
+
+    function fillBorderFigures() {
+        let figures = {}
         for (let x = 0; x<100; x++) {
             let imgd = readPixel(x,0)
             let pix = imgd.data
-            
-            if (notWhite(pix)) { //found start of a figure
-                //each figure has a unique color, so we just keep tracing along the border
+            if (notWhite(pix)) {
+                //found start or end of a figure
+                rgb = [pix[0], pix[1], pix[2]]
+                console.log("found rgb along top border: " + rgb)
+                let s = rgb.toString() //string representation for dict entry
+                if (s in figures) { //already found the same color on this border: fill 
+                    bucketFill(rgb, x-1, 0)
+                } else { //mark as found
+                    figures[s] = true
+                }
             }
         }
     }
-
     setup()
 </script>
