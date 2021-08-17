@@ -1,17 +1,35 @@
 
 <canvas id="canvas2" width="100" height="100" style="image-rendering: pixelated;"></canvas>
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAS0lEQVQYGY2OwQ4AMARDddn///K2yggHwkXa1CucN/IHgARptu6VVCPGQTyIVrOS1dXsGKj+47FXk9YRNUhSR0vE6jfzvdqMao+DF5Z0Fw1RhhvUAAAAAElFTkSuQmCC" id="pattern0">
+
+<!-- 4-images named 2-1 2-2 2-3 2-4 -->
+<!-- img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAS0lEQVQYGY2OwQ4AMARDddn///K2yggHwkXa1CucN/IHgARptu6VVCPGQTyIVrOS1dXsGKj+47FXk9YRNUhSR0vE6jfzvdqMao+DF5Z0Fw1RhhvUAAAAAElFTkSuQmCC" id="pattern0">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAARklEQVQYGY1OQQ4AIAjK5v+/XNFiw4MNLgriINbBeIiIIZTynbOwD7GNibgOesuuE595t6NtYzICUzupjr0YIbATdoUdvQEhmBAYdPdqYgAAAABJRU5ErkJggg==" id="pattern1">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAUklEQVQYGY2PAQoAIAgDVfz/l6tFCxWMhJCtc5aOVXJKVSVI2rtbUksAxqmVQKR1ic7pDuC9dUBcDcZpcJK69g3+pKbP1JSo72qYr/UJBNw9YwICrBwX6pBuOAAAAABJRU5ErkJggg==" id="pattern2">
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAVUlEQVQYGYWPUQ4AIAhCs3X/K1e4cOm0+GkYPEvmVjsSkXZZjvUczm2DcBTKLpjRWETdVmckBkdGQYEB3vdIqby+ke0qhLl9hiuqsK0G9UXWIGg/4gInBSAVay240gAAAABJRU5ErkJggg==" id="pattern3">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAVUlEQVQYGYWPUQ4AIAhCs3X/K1e4cOm0+GkYPEvmVjsSkXZZjvUczm2DcBTKLpjRWETdVmckBkdGQYEB3vdIqby+ke0qhLl9hiuqsK0G9UXWIGg/4gInBSAVay240gAAAABJRU5ErkJggg==" id="pattern3"--->
+
+
+<!-- 6-images-->
+<img id="pattern1" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAARUlEQVQYGcWQMQ4AIAgDreH/X1YwnmFCN7sg7ZEgGq7mktT2M9ql7HXMW/0IWixciVz8uoIjMwAm6amc7IARYALl4efzTNf5FBcguOs/AAAAAElFTkSuQmCC">
+<img id="pattern2" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAATElEQVQYGY1PQQ4AIAjK5v+/XOLCNZdLLikBE1mGYRCRcUasjptTknjxUSGEOS0bZiaqvS3EUV6mSiKvv9tCyKFqzKBoDQPJl7ldZgO8EBcV3hXTogAAAABJRU5ErkJggg==">
+<img id="pattern3" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAASElEQVQYGWP8DwQMQMDIyMgAZYK4YIAsxgITBNEgCVwArhDdNHQNTOgCuPhEKwQ5CuwZkEno1iO7mQUmiSyIbD1Mnmirqa8QAKaUFxFMCOCEAAAAAElFTkSuQmCC">
+<img id="pattern4" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAUElEQVQYGY2P2w4AEAxDTfb/v4yKLg0T+rLpzi6sDZUhMysrxXNKvUrzFX0HMCXTAQLaT4D3v/q2ClO05tkaQBTrcaN2E9IYIEx2K8D8+zMd1PwWHObDgnkAAAAASUVORK5CYII=">
+<img id="pattern0" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAU0lEQVQYGY2PSQ6AMAwDG5T/fxlqxKARYvMlqbe2tU6Miaoax5rjDnML5Nf8bWw35SpwfcZptOAAwTZpMwb0RoTAkImW/fEzCTp8a0yT214bIxobY2EfGM5pdNsAAAAASUVORK5CYII=">
+
+
+
+  <!--input type="file" onchange="encodeImageFileAsURL(this)" /-->
 
 <script>
-/*
-<img src="v2-1.png" id="pattern0">
-<img src="v2-2.png" id="pattern1">
-<img src="v2-3.png" id="pattern2">
-<img src="v2-4.png" id="pattern3">
-*/
+
+function encodeImageFileAsURL(element) { //only used to convrt images with the input html above 
+    var file = element.files[0];
+    var reader = new FileReader();
+    reader.onloadend = function() {
+      console.log('RESULT', reader.result)
+    }
+    reader.readAsDataURL(file);
+  }
+
     let usedColors = {}
     var canvas2 = document.getElementById('canvas2');
     var ctx2 = canvas2.getContext('2d');
@@ -23,14 +41,18 @@
     }
 
     function setup() {
-        var cells = [[], [], [], []]
+        const IMAGES = 5
+        let cells = []
+        for (let n = 0; n<IMAGES; n++) {
+            cells.push([])
+        }
         
         for (let n = 0; n<100; n++) {
-            let x = Math.floor(Math.random() * 4)
+            let x = Math.floor(Math.random() * IMAGES)
             cells[x].push(n)
         }
         
-        for (let n = 0; n<4; n++) {
+        for (let n = 0; n<IMAGES; n++) {
             let image = document.getElementById("pattern" + n)
             image.addEventListener('load', e => {
                 cells[n].forEach(index => {
