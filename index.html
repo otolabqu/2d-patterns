@@ -127,7 +127,8 @@
         }
         console.log("all used colors: ")
         console.log(usedColors)
-        setTimeout(() => {fillBorderFigures()}, 1000)
+        setTimeout(() => {fillBorderFigures(0)}, 1000)
+        setTimeout(() => {fillBorderFigures(99)}, 5000)
     }
 
     function notWhite(p) {
@@ -153,22 +154,22 @@
         bucketFill(color, x, y+1)
     }
 
-    function fillBorderFigures() {
+    function fillBorderFigures(y) {
         let figures = {}
-        for (let x = 0; x<100; x++) {
-            let imgd = readImgd(x,0)
-            let pix = imgd.data
-            if (notWhite(pix)) {
-                //found start or end of a figure
-                rgb = [pix[0], pix[1], pix[2]]
-                let s = rgb.toString() //string representation for dict entry
-                if (s in figures) { //already found the same color on this border: fill 
-                    bucketFill(rgb, x-1, 0)
-                } else { //mark as found
-                    figures[s] = true
+            for (let x = 0; x<100; x++) {
+                let imgd = readImgd(x,y)
+                let pix = imgd.data
+                if (notWhite(pix)) {
+                    //found start or end of a figure
+                    rgb = [pix[0], pix[1], pix[2]]
+                    let s = rgb.toString() //string representation for dict entry
+                    if (s in figures) { //already found the same color on this border: fill 
+                        bucketFill(rgb, x-1, y)
+                    } else { //mark as found
+                        figures[s] = true
+                    }
                 }
             }
-        }
     }
     setup()
 </script>
