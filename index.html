@@ -43,11 +43,15 @@
         
     }
 
-    function readPixel(x, y) {
+    function readImgd(x,y) {
         var canvas2 = document.getElementById('canvas2');
         var ctx2 = canvas2.getContext('2d');
         var imgd = ctx2.getImageData(x, y, 1, 1);
         return imgd
+    }
+    function readPixel(x, y) {
+        let imgd = readImgd(x,y)
+        return imgd.data
     }
 
     function outside(x,y) {
@@ -61,8 +65,7 @@
         if (outside(x,y)) {
             return
         }
-        let imgd = readPixel(x,y)
-        let pix = imgd.data
+        let pix = readPixel(x,y)
         
         if (!(pix[0] == 0 && pix[1] == 0 && pix[2] == 0)) {
                 return //not black, do nothing
@@ -74,7 +77,7 @@
             return
         }
         
-        let imgd = readPixel(x,y)
+        let imgd = readImgd(x,y)
         let pix = imgd.data
         if (!(pix[0] == 0 && pix[1] == 0 && pix[2] == 0)) {
                 return //not black, do nothing
@@ -135,7 +138,7 @@
         if (outside(x,y)) {
             return
         }
-        let imgd = readPixel(x,y)
+        let imgd = readImgd(x,y)
         let pix = imgd.data
         if (notWhite(pix)) {
             return
@@ -153,12 +156,11 @@
     function fillBorderFigures() {
         let figures = {}
         for (let x = 0; x<100; x++) {
-            let imgd = readPixel(x,0)
+            let imgd = readImgd(x,0)
             let pix = imgd.data
             if (notWhite(pix)) {
                 //found start or end of a figure
                 rgb = [pix[0], pix[1], pix[2]]
-                console.log("found rgb along top border: " + rgb)
                 let s = rgb.toString() //string representation for dict entry
                 if (s in figures) { //already found the same color on this border: fill 
                     bucketFill(rgb, x-1, 0)
