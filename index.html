@@ -128,7 +128,10 @@
         console.log("all used colors: ")
         console.log(usedColors)
         setTimeout(() => {fillBorderFigures(0)}, 1000)
-        setTimeout(() => {fillBorderFigures(99)}, 5000)
+        setTimeout(() => {fillBorderFigures(99)}, 3000)
+        setTimeout(() => {fillBorderFiguresRL(0)}, 5000)
+        setTimeout(() => {fillBorderFiguresRL(99)}, 7000)
+        
     }
 
     function notWhite(p) {
@@ -165,6 +168,24 @@
                     let s = rgb.toString() //string representation for dict entry
                     if (s in figures) { //already found the same color on this border: fill 
                         bucketFill(rgb, x-1, y)
+                    } else { //mark as found
+                        figures[s] = true
+                    }
+                }
+            }
+    }
+
+    function fillBorderFiguresRL(x) {
+        let figures = {}
+            for (let y = 0; y<100; y++) {
+                let imgd = readImgd(x,y)
+                let pix = imgd.data
+                if (notWhite(pix)) {
+                    //found start or end of a figure
+                    rgb = [pix[0], pix[1], pix[2]]
+                    let s = rgb.toString() //string representation for dict entry
+                    if (s in figures) { //already found the same color on this border: fill 
+                        bucketFill(rgb, x, y-1)
                     } else { //mark as found
                         figures[s] = true
                     }
