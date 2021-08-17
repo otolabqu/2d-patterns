@@ -113,7 +113,6 @@
             c = colorTriple()
             s = c.toString()
         }
-        console.log("unused color returning " + c + " which tostring is " + s)
         usedColors[s] = true
         return c
     }
@@ -125,8 +124,6 @@
             startTrace(0, n)
             startTrace(99, n)
         }
-        console.log("all used colors: ")
-        console.log(usedColors)
         setTimeout(() => {walkAndfillAll()}, 1000)
     }
 
