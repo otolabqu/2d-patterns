@@ -127,11 +127,7 @@
         }
         console.log("all used colors: ")
         console.log(usedColors)
-        setTimeout(() => {fillBorderFigures(0)}, 1000)
-        setTimeout(() => {fillBorderFigures(99)}, 3000)
-        setTimeout(() => {fillBorderFiguresRL(0)}, 5000)
-        setTimeout(() => {fillBorderFiguresRL(99)}, 7000)
-        
+        setTimeout(() => {walkAndfillAll()}, 1000)
     }
 
     function notWhite(p) {
@@ -157,40 +153,81 @@
         bucketFill(color, x, y+1)
     }
 
-    function fillBorderFigures(y) {
+    function walkAndfillAll() {
         let figures = {}
-            for (let x = 0; x<100; x++) {
-                let imgd = readImgd(x,y)
-                let pix = imgd.data
-                if (notWhite(pix)) {
+        let step = 0
+        //Starting at 0,0, walk around the whole border starting with the top one from left to right
+        let y = 0
+        for (let x = 0; x<100; x++) {
+            let pix = readPixel(x,y)
+            if (notWhite(pix)) {
                     //found start or end of a figure
-                    rgb = [pix[0], pix[1], pix[2]]
+                    let rgb = [pix[0], pix[1], pix[2]]
                     let s = rgb.toString() //string representation for dict entry
-                    if (s in figures) { //already found the same color on this border: fill 
-                        bucketFill(rgb, x-1, y)
-                    } else { //mark as found
-                        figures[s] = true
+                    if (!(s in figures)) { //first time found this color, save step number
+                        figures[s] = step
+                    } else { //second time found: bucket fill
+                            bucketFill(rgb, x-1, y) //always < 200 since we started on the top border
                     }
+            }    
+            step++
+        }
+        let x = 99
+        for (let y = 0; y < 100; y++) { //continue walking along right border and downwards
+            let pix = readPixel(x,y)
+            if (notWhite(pix)) {
+                //found start or end of a figure
+                rgb = [pix[0], pix[1], pix[2]]
+                let s = rgb.toString() //string representation for dict entry
+                if (!(s in figures)) { //first time found this color, save step number
+                        figures[s] = step
+                    } else { //second time found: bucket fill
+                            bucketFill(rgb, x, y-1) //always < 200 since we started on the top border
+                    }
+            }
+            step++
+        }
+        y = 99
+        for (let x = 99; x >= 0; x--) { //continue along bottom border, right to left
+            let pix = readPixel(x, y)
+            if (notWhite(pix)) {
+                //found start or end of a figure
+                rgb = [pix[0], pix[1], pix[2]]
+                let s = rgb.toString() //string representation for dict entry
+                if (!(s in figures)) { //first time found this color, save step number
+                        figures[s] = step
+                    } else { //second time found: bucket fill, but now we need to check distance
+                        let diff = step - figures[s]
+                        if (diff < 200) {
+                            bucketFill(rgb, x+1, y)
+                        } else {
+                            bucketFill(rgb, x-1, y)
+                        }
+                    }
+            }
+            step++
+        }
+        x = 0
+        for (let y = 99; y >= 0; y--) { //continue along left bordeer, bottom to top
+            let pix = readPixel(x,y)
+            if (notWhite(pix)) {
+                rgb = [pix[0], pix[1], pix[2]]
+                let s = rgb.toString() //string representation for dict entry
+                if (!(s in figures)) { //first time found this color, save step number
+                        figures[s] = step
+                } else {//second time found: bucket fill, but now we need to check distance
+                    let diff = step - figures[s]
+                        if (diff < 200) {
+                            bucketFill(rgb, x, y+1)
+                        } else {
+                            bucketFill(rgb, x, y-1)
+                        }
                 }
             }
-    }
+            step++
 
-    function fillBorderFiguresRL(x) {
-        let figures = {}
-            for (let y = 0; y<100; y++) {
-                let imgd = readImgd(x,y)
-                let pix = imgd.data
-                if (notWhite(pix)) {
-                    //found start or end of a figure
-                    rgb = [pix[0], pix[1], pix[2]]
-                    let s = rgb.toString() //string representation for dict entry
-                    if (s in figures) { //already found the same color on this border: fill 
-                        bucketFill(rgb, x, y-1)
-                    } else { //mark as found
-                        figures[s] = true
-                    }
-                }
-            }
+        }
+
     }
     setup()
 </script>
